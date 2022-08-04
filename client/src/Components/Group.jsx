@@ -169,12 +169,12 @@ const Group = () => {
           <Container
             sx={{
               display: "flex",
-              minHeight: "75vh",
+              minHeight: "70vh",
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            <Typography fontSize="25px" textAlign="center">
+            <Typography fontSize="25px" fontWeight="600" textAlign="center">
               Create group by pressing the button
             </Typography>
           </Container>

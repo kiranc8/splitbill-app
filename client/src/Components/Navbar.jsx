@@ -39,7 +39,7 @@ const Navbar = () => {
                 color: "#3c3a3a",
                 marginLeft: { md: "10px", xs: "0px" },
                 fontSize: { sm: "25px", xs: "20px" },
-                fontWeight: "600",
+                fontWeight: "800",
                 cursor: "pointer",
               }}
               onClick={()=>navigate('/')}
