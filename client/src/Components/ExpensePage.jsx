@@ -157,6 +157,8 @@ const ExpensePage = () => {
       .then((response) => {
         if (response) {
           setSuccessMsg(response.data);
+          setTitle("");
+          setAmount("");
           handleClose();
           hideLoader();
           setOpenSnackbar(true);

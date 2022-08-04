@@ -18,7 +18,6 @@ const SettlementPage = () => {
   const [data, setData] = useState([]);
   const [loader, setLoader] = useState(true);
   const token = localStorage.getItem("authToken");
-  console.log(data);
   useEffect(() => {
     axios
       .get(`${baseUrl}/expense/settle?groupId=${groupId}`, {
