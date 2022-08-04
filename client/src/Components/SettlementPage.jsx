@@ -5,6 +5,10 @@ import { useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
 import Image from "../assets/72991-payer.gif";
 import { baseUrl } from "./Constants";
 import Loader from "./Loader";
@@ -71,18 +75,33 @@ const SettlementPage = () => {
                 alignItems: "center",
               }}
             >
-              {data.map((item) => {
-                return (
-                  <Typography
-                    sx={{
-                      fontSize: { md: "25px", xs: "18px" },
-                      textAlign: "center",
-                    }}
-                  >
-                    {item}
-                  </Typography>
-                );
-              })}
+              <Typography sx={{ marginBottom: "10px", fontSize: "20px" }}>
+                Suggested payments
+              </Typography>
+              <Table
+                sx={{
+                  borderTop: "1px solid gray",
+                  borderBottom: "1px solid gray",
+                }}
+              >
+                <TableBody>
+                  {data.map((item) => {
+                    return (
+                      <TableRow
+                        key={item.from}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell align="left">{item.from}</TableCell>
+                        <TableCell align="center">owes</TableCell>
+                        <TableCell align="center">{item.to}</TableCell>
+                        <TableCell align="right">INR{item.amount}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
             </Box>
           </Container>
         </>
