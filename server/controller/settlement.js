@@ -29,7 +29,7 @@ const settle = async (groupId) => {
     return a.share - b.share;
   });
   if (share.every((val, i, arr) => val.share === arr[0].share)) {
-    return ["No payment"];
+    return [];
   }
 
   let left = 0;

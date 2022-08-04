@@ -16,10 +16,10 @@ const SettlementPage = () => {
   const groupId = new URLSearchParams(useLocation().search).get("groupId");
   const navigate = useNavigate();
   const [data, setData] = useState([]);
-  const [loader, setLoader] = useState(false);
+  const [loader, setLoader] = useState(true);
   const token = localStorage.getItem("authToken");
+  console.log(data);
   useEffect(() => {
-    showLoader();
     axios
       .get(`${baseUrl}/expense/settle?groupId=${groupId}`, {
         headers: { authorization: `Bearer ${token}` },
@@ -35,9 +35,6 @@ const SettlementPage = () => {
       });
   }, []);
 
-  const showLoader = () => {
-    setLoader(true);
-  };
   const hideLoader = () => {
     setLoader(false);
   };
@@ -65,11 +62,28 @@ const SettlementPage = () => {
             >
               <img src={Image} alt="" />
             </Box>
+            {data.length<1?(
             <Box
               sx={{
                 width: { md: "50%", xs: "100%" },
                 marginTop: { md: "0", xs: "50px" },
-                marginBottom:"20px",
+                marginBottom: "20px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography sx={{fontSize: "20px" }}>
+                No payments
+              </Typography>
+            </Box>
+            ):(
+            <Box
+              sx={{
+                width: { md: "50%", xs: "100%" },
+                marginTop: { md: "0", xs: "50px" },
+                marginBottom: "20px",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
@@ -104,6 +118,7 @@ const SettlementPage = () => {
                 </TableBody>
               </Table>
             </Box>
+            )}
           </Container>
         </>
       )}

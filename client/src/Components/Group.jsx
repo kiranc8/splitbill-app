@@ -36,11 +36,10 @@ const Group = () => {
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [loader, setLoader] = useState(false);
+  const [loader, setLoader] = useState(true);
   const token = localStorage.getItem("authToken");
   const userId = localStorage.getItem("userId");
   useEffect(() => {
-    showLoader();
     axios
       .get(`${baseUrl}/expense/getgroup?userId=${userId}`, {
         headers: { authorization: `Bearer ${token}` },
@@ -66,6 +65,7 @@ const Group = () => {
       })
       .catch((err) => {
         setErrorMsg(err.message);
+        hideLoader();
         setOpenSnackbar(true);
       });
   };
@@ -101,7 +101,13 @@ const Group = () => {
 
   const addPeople = () => {
     if (name !== "") {
-      setChipdata((chipdata) => [...chipdata, name]);
+      if (chipdata.includes(name)) {
+        setErrorMsg("Already exist");
+        setOpenSnackbar(true);
+      } else {
+        setChipdata((chipdata) => [...chipdata, name]);
+        setName("");
+      }
     }
   };
 
@@ -123,6 +129,7 @@ const Group = () => {
     }
   };
   const formSubmit = (formObj) => {
+    showLoader();
     axios
       .post(`${baseUrl}/expense/creategroup`, formObj, {
         headers: { authorization: `Bearer ${token}` },
@@ -135,9 +142,11 @@ const Group = () => {
           setOpenSnackbar(true);
           loadData();
           handleClose();
+          hideLoader();
         } else {
           setErrorMsg(response.data);
           setOpenSnackbar(true);
+          hideLoader();
         }
       })
       .catch((err) => {
@@ -146,6 +155,7 @@ const Group = () => {
         } else {
           setErrorMsg(err.message);
           setOpenSnackbar(true);
+          hideLoader();
         }
       });
   };
@@ -219,7 +229,7 @@ const Group = () => {
                         {item.groupname}
                       </Typography>
                       <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                        Created on  {item.date}
+                        Created on {item.date}
                       </Typography>
                       <Box sx={{ display: "flex" }}>
                         <AvatarGroup total={item.members.length}>
@@ -272,6 +282,7 @@ const Group = () => {
                   type="email"
                   fullWidth
                   variant="standard"
+                  value={groupname}
                   onChange={(e) => setGroupname(e.target.value)}
                 />
                 <TextField
@@ -282,6 +293,7 @@ const Group = () => {
                   type="text"
                   fullWidth
                   variant="standard"
+                  value={name}
                   onChange={(e) => setName(e.target.value)}
                   InputProps={{
                     endAdornment: (

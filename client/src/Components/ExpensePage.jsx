@@ -41,11 +41,10 @@ const ExpensePage = () => {
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [loader, setLoader] = useState(false);
+  const [loader, setLoader] = useState(true);
   const token = localStorage.getItem("authToken");
   const groupId = new URLSearchParams(useLocation().search).get("groupId");
   useEffect(() => {
-    showLoader();
     axios
       .get(`${baseUrl}/expense/getexpense?groupId=${groupId}`, {
         headers: { authorization: `Bearer ${token}` },
@@ -109,6 +108,7 @@ const ExpensePage = () => {
       });
   };
   const deleteExpense = (expenseId) => () => {
+    showLoader();
     axios
       .delete(`${baseUrl}/expense/deleteexpense?expenseId=${expenseId}`, {
         headers: { authorization: `Bearer ${token}` },
@@ -117,6 +117,7 @@ const ExpensePage = () => {
         setSuccessMsg(response.data);
         setOpenSnackbar(true);
         loadData();
+        hideLoader();
       })
       .catch((err) => {
         if (err.response.status === 403 || err.response.status === 401) {
@@ -148,6 +149,7 @@ const ExpensePage = () => {
   };
 
   const formSubmit = (formObj) => {
+    showLoader();
     axios
       .post(`${baseUrl}/expense/addexpense`, formObj, {
         headers: { authorization: `Bearer ${token}` },
@@ -155,6 +157,8 @@ const ExpensePage = () => {
       .then((response) => {
         if (response) {
           setSuccessMsg(response.data);
+          handleClose();
+          hideLoader();
           setOpenSnackbar(true);
           loadData();
         }

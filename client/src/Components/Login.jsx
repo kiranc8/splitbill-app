@@ -14,6 +14,7 @@ import Alert from "@mui/material/Alert";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import loginIcon from "../assets/50124-user-profile.gif";
+import Loader from "./Loader";
 import { baseUrl } from "./Constants";
 const Login = () => {
   const navigate = useNavigate();
@@ -24,12 +25,20 @@ const Login = () => {
   const [passwordError, setPasswordError] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [open, setOpen] = useState(false);
+  const [loader, setLoader] = useState(false);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setOpen(false);
+  };
+
+  const showLoader = () => {
+    setLoader(true);
+  };
+  const hideLoader = () => {
+    setLoader(false);
   };
 
   const handleChange = (e) => {
@@ -84,136 +93,153 @@ const Login = () => {
     }
   };
   const formSubmit = (formObj) => {
-    axios.post(`${baseUrl}/user/login`, formObj).then((response) => {
-      if (response.data) {
-        if (
-          response.data === "User not available ! Please register" ||
-          response.data === "Incorrect username or password"
-        ) {
-          setErrorMsg(response.data);
-          setOpen(true);
-        } else {
-          localStorage.setItem("loggedIn", true);
-          localStorage.setItem("userId", response.data.resp.userId);
-          localStorage.setItem("authToken", response.data.token);
-          navigate("/group");
+    showLoader();
+    axios
+      .post(`${baseUrl}/user/login`, formObj)
+      .then((response) => {
+        if (response.data) {
+          if (
+            response.data === "User not available ! Please register" ||
+            response.data === "Incorrect username or password"
+          ) {
+            setErrorMsg(response.data);
+            hideLoader();
+            setOpen(true);
+          } else {
+            localStorage.setItem("loggedIn", true);
+            localStorage.setItem("userId", response.data.resp.userId);
+            localStorage.setItem("authToken", response.data.token);
+            hideLoader();
+            navigate("/group");
+          }
         }
-      }
-    }).catch(err=>{
-      setErrorMsg(err.message);
-      setOpen(true);
-    });
+      })
+      .catch((err) => {
+        setErrorMsg(err.message);
+        hideLoader();
+        setOpen(true);
+      });
   };
 
   return (
     <div>
-      <Container
-        sx={{
-          display: "flex",
-          minHeight: "73vh",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: { md: "row", xs: "column" },
-        }}
-      >
-        <Box
-          sx={{
-            width: { md: "50%", xs: "100%" },
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
+      {loader ? (
+        <Loader />
+      ) : (
+        <>
           <Container
-            maxWidth="xs"
             sx={{
-              height: "100%",
+              display: "flex",
+              minHeight: "73vh",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: { md: "row", xs: "column" },
             }}
           >
-            <CssBaseline />
-            <Typography component="h1" variant="h5">
-              Sign in
-            </Typography>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              onChange={handleChange}
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              value={email}
-              helperText={emailError}
-              error={emailError ? true : false}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              onChange={handleChange}
-              value={password}
-              helperText={passwordError}
-              error={passwordError ? true : false}
-              type={showPassword ? "text" : "password"}
-              id="password"
-              autoComplete="current-password"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={(e) => setShowPassword(!showPassword)}
-                      onMouseDown={(e) => e.preventDefault()}
-                      edge="end"
-                    >
-                      {showPassword ? (
-                        <VisibilityIcon />
-                      ) : (
-                        <VisibilityOffIcon />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
+            <Box
               sx={{
-                backgroundColor: "#1cc29f",
-                padding: "16px",
-                mt: 3,
-                mb: 2,
-                "&:hover": { backgroundColor: "#1cc29f" },
+                width: { md: "50%", xs: "100%" },
+                display: "flex",
+                flexDirection: "column",
               }}
-              onClick={handleSubmit}
             >
-              Sign In
-            </Button>
+              <Container
+                maxWidth="xs"
+                sx={{
+                  height: "100%",
+                }}
+              >
+                <CssBaseline />
+                <Typography component="h1" variant="h5">
+                  Sign in
+                </Typography>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  onChange={handleChange}
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                  value={email}
+                  helperText={emailError}
+                  error={emailError ? true : false}
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  onChange={handleChange}
+                  value={password}
+                  helperText={passwordError}
+                  error={passwordError ? true : false}
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  autoComplete="current-password"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={(e) => setShowPassword(!showPassword)}
+                          onMouseDown={(e) => e.preventDefault()}
+                          edge="end"
+                        >
+                          {showPassword ? (
+                            <VisibilityIcon />
+                          ) : (
+                            <VisibilityOffIcon />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "#1cc29f",
+                    padding: "16px",
+                    mt: 3,
+                    mb: 2,
+                    "&:hover": { backgroundColor: "#1cc29f" },
+                  }}
+                  onClick={handleSubmit}
+                >
+                  Sign In
+                </Button>
+              </Container>
+            </Box>
+            <Box
+              sx={{
+                height: "100%",
+                width: "50%",
+                display: { md: "flex", xs: "none" },
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <img src={loginIcon} alt="" style={{ width: "450px" }} />
+            </Box>
           </Container>
-        </Box>
-        <Box
-          sx={{
-            height: "100%",
-            width: "50%",
-            display: { md: "flex", xs: "none" },
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <img src={loginIcon} alt="" style={{ width: "450px" }} />
-        </Box>
-      </Container>
-      <Snackbar autoHideDuration={4000} open={open} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-          {errorMsg}
-        </Alert>
-      </Snackbar>
+          <Snackbar autoHideDuration={4000} open={open} onClose={handleClose}>
+            <Alert
+              onClose={handleClose}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              {errorMsg}
+            </Alert>
+          </Snackbar>
+        </>
+      )}
     </div>
   );
 };
