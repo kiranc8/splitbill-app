@@ -29,6 +29,7 @@ import Alert from "@mui/material/Alert";
 import Paper from "@mui/material/Paper";
 import background from "../assets/facets.png";
 import { baseUrl } from "./Constants";
+import Loader from "./Loader";
 const ExpensePage = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -40,15 +41,18 @@ const ExpensePage = () => {
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [loader, setLoader] = useState(false);
   const token = localStorage.getItem("authToken");
   const groupId = new URLSearchParams(useLocation().search).get("groupId");
   useEffect(() => {
+    showLoader();
     axios
       .get(`${baseUrl}/expense/getexpense?groupId=${groupId}`, {
         headers: { authorization: `Bearer ${token}` },
       })
       .then((response) => {
         setExpensedata(response.data);
+        hideLoader();
       })
       .catch((err) => {
         if (err.response.status === 403 || err.response.status === 401) {
@@ -154,11 +158,12 @@ const ExpensePage = () => {
           setOpenSnackbar(true);
           loadData();
         }
-      }).catch((err) => {
+      })
+      .catch((err) => {
         if (err.response.status === 403 || err.response.status === 401) {
           navigate("/login");
         }
-      });;
+      });
   };
 
   const handleClickOpen = () => {
@@ -169,186 +174,203 @@ const ExpensePage = () => {
     setOpen(false);
   };
 
+  const showLoader = () => {
+    setLoader(true);
+  };
+  const hideLoader = () => {
+    setLoader(false);
+  };
+
   return (
     <div>
-      <Container
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          minHeight: "78vh",
-          maxHeight: "78vh",
-          overflowX: "scroll",
-          padding: "5px",
-        }}
-      >
-        <TableContainer
-          component={Paper}
-          sx={{ backgroundImage: `url(${background})` }}
-        >
-          <Table aria-label="simple table">
-            <TableBody>
-              {expensedata.map((item) => (
-                <TableRow
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  key={item.expenseId}
-                >
-                  <TableCell component="th" scope="row">
-                    {item.title}
-                  </TableCell>
-                  <TableCell align="right">{item.person}</TableCell>
-                  <TableCell align="right">{item.date}</TableCell>
-                  <TableCell align="right">{item.amount}</TableCell>
-                  <TableCell align="right">
-                    <DeleteIcon
-                      sx={{ cursor: "pointer", color: "#1cc29f" }}
-                      onClick={deleteExpense(item.expenseId)}
-                    />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Box
-          sx={{ display: "flex", justifyContent: "center", marginTop: "5px" }}
-        >
-          {expensedata.length === 0 ? (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <h1 style={{ textAlign: "center" }}>No expense</h1>
-              <p style={{ textAlign: "center" }}>
-                Add an expense by pressing the button below
-              </p>
-            </div>
-          ) : (
-            <Button
-              type="submit"
-              variant="contained"
-              sx={{
-                backgroundColor: "#1cc29f",
-                "&:hover": { backgroundColor: "#1cc29f" },
-                marginTop: "10px",
-              }}
-              onClick={settleUp}
-            >
-              Settle up
-            </Button>
-          )}
-        </Box>
-      </Container>
-
-      <Dialog open={open} onClose={handleClose} maxWidth="xs">
-        <DialogTitle>New expense</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Easy to share bills with your friends and anyone
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="title"
-            label="Title"
-            type="text"
-            fullWidth
-            variant="standard"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="amount"
-            label="Amount"
-            type="number"
-            fullWidth
-            variant="standard"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-          />
-          <FormControl sx={{ mt: 2, minWidth: 220 }}>
-            <InputLabel htmlFor="By">By</InputLabel>
-
-            <Select
-              autoFocus
-              label="By"
-              inputProps={{
-                name: "By",
-                id: "by",
-              }}
-              value={person}
-              onChange={(e) => setPerson(e.target.value)}
-            >
-              {groupmembers.map((item) => (
-                <MenuItem value={item}>{item}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            variant="contained"
-            disableFocusRipple={true}
+      {loader ? (
+        <Loader />
+      ) : (
+        <>
+          <Container
             sx={{
-              backgroundColor: "#1cc29f",
-              "&:hover": {
-                backgroundColor: "#1cc29f",
-              },
-              marginLeft: "10px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              minHeight: "78vh",
+              maxHeight: "78vh",
+              overflowX: "scroll",
+              padding: "5px",
             }}
-            onClick={handleSubmit}
           >
-            Submit
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <Box>
-        <SpeedDial
-          ariaLabel="SpeedDial basic example"
-          sx={{ position: "absolute", bottom: 5, right: 16 }}
-          icon={<SpeedDialIcon />}
-          FabProps={{
-            sx: {
-              bgcolor: "#1cc29f",
-              "&:hover": {
-                bgcolor: "#1cc29f",
-              },
-            },
-          }}
-        >
-          <SpeedDialAction
-            key={"delete"}
-            icon={<DeleteIcon />}
-            tooltipTitle={"Delete group"}
-            onClick={deleteGroup}
-          />
-          <SpeedDialAction
-            key={"expense"}
-            icon={<ReceiptIcon />}
-            tooltipTitle={"New expense"}
-            onClick={handleClickOpen}
-          />
-        </SpeedDial>
-      </Box>
-      <Snackbar
-        autoHideDuration={4000}
-        open={openSnackbar}
-        onClose={handleCloseSnackbar}
-      >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity={errorMsg ? "error" : "success"}
-          sx={{ width: "100%" }}
-        >
-          {errorMsg ? errorMsg : successMsg}
-        </Alert>
-      </Snackbar>
+            <TableContainer
+              component={Paper}
+              sx={{ backgroundImage: `url(${background})` }}
+            >
+              <Table aria-label="simple table">
+                <TableBody>
+                  {expensedata.map((item) => (
+                    <TableRow
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                      key={item.expenseId}
+                    >
+                      <TableCell component="th" scope="row">
+                        {item.title}
+                      </TableCell>
+                      <TableCell align="right">{item.person}</TableCell>
+                      <TableCell align="right">{item.date}</TableCell>
+                      <TableCell align="right">{item.amount}</TableCell>
+                      <TableCell align="right">
+                        <DeleteIcon
+                          sx={{ cursor: "pointer", color: "#1cc29f" }}
+                          onClick={deleteExpense(item.expenseId)}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "5px",
+              }}
+            >
+              {expensedata.length === 0 ? (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <h1 style={{ textAlign: "center" }}>No expense</h1>
+                  <p style={{ textAlign: "center" }}>
+                    Add an expense by pressing the button below
+                  </p>
+                </div>
+              ) : (
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "#1cc29f",
+                    "&:hover": { backgroundColor: "#1cc29f" },
+                    marginTop: "10px",
+                  }}
+                  onClick={settleUp}
+                >
+                  Settle up
+                </Button>
+              )}
+            </Box>
+          </Container>
+
+          <Dialog open={open} onClose={handleClose} maxWidth="xs">
+            <DialogTitle>New expense</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Easy to share bills with your friends and anyone
+              </DialogContentText>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="title"
+                label="Title"
+                type="text"
+                fullWidth
+                variant="standard"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+              <TextField
+                autoFocus
+                margin="dense"
+                id="amount"
+                label="Amount"
+                type="number"
+                fullWidth
+                variant="standard"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+              />
+              <FormControl sx={{ mt: 2, minWidth: 220 }}>
+                <InputLabel htmlFor="By">By</InputLabel>
+
+                <Select
+                  autoFocus
+                  label="By"
+                  inputProps={{
+                    name: "By",
+                    id: "by",
+                  }}
+                  value={person}
+                  onChange={(e) => setPerson(e.target.value)}
+                >
+                  {groupmembers.map((item) => (
+                    <MenuItem value={item}>{item}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                variant="contained"
+                disableFocusRipple={true}
+                sx={{
+                  backgroundColor: "#1cc29f",
+                  "&:hover": {
+                    backgroundColor: "#1cc29f",
+                  },
+                  marginLeft: "10px",
+                }}
+                onClick={handleSubmit}
+              >
+                Submit
+              </Button>
+            </DialogActions>
+          </Dialog>
+          <Box>
+            <SpeedDial
+              ariaLabel="SpeedDial basic example"
+              sx={{ position: "absolute", bottom: 5, right: 16 }}
+              icon={<SpeedDialIcon />}
+              FabProps={{
+                sx: {
+                  bgcolor: "#1cc29f",
+                  "&:hover": {
+                    bgcolor: "#1cc29f",
+                  },
+                },
+              }}
+            >
+              <SpeedDialAction
+                key={"delete"}
+                icon={<DeleteIcon />}
+                tooltipTitle={"Delete group"}
+                onClick={deleteGroup}
+              />
+              <SpeedDialAction
+                key={"expense"}
+                icon={<ReceiptIcon />}
+                tooltipTitle={"New expense"}
+                onClick={handleClickOpen}
+              />
+            </SpeedDial>
+          </Box>
+          <Snackbar
+            autoHideDuration={4000}
+            open={openSnackbar}
+            onClose={handleCloseSnackbar}
+          >
+            <Alert
+              onClose={handleCloseSnackbar}
+              severity={errorMsg ? "error" : "success"}
+              sx={{ width: "100%" }}
+            >
+              {errorMsg ? errorMsg : successMsg}
+            </Alert>
+          </Snackbar>
+        </>
+      )}
     </div>
   );
 };

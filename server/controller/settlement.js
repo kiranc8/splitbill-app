@@ -29,6 +29,7 @@ const settle = async (groupId) => {
     return a.share - b.share;
   });
 
+  console.log(share);
   if (share.every((val, i, arr) => val.share === arr[0].share)) {
     return ["No payment"];
   }
@@ -39,13 +40,16 @@ const settle = async (groupId) => {
   const answer = [];
 
   while (left < right) {
-    if (-share[left].share > share[right].share) {
+    if (-share[left].share >= share[right].share) {
       answer.push(
         `${share[left].member} owes ${share[right].member} INR${share[
           right
         ].share.toFixed(2)} `
       );
       share[left].share += share[right].share;
+      if(share[left].share===0){
+        left++;
+      }
       right--;
     } else {
       answer.push(
