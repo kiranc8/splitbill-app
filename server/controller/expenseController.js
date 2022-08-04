@@ -5,12 +5,14 @@ const generateId = () => {
   const tail = Math.random().toString(36).substr(2);
   return head + tail;
 };
+
+const month =["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const createGroup = (userId, groupname, members) => {
   let newgrp = {
     userId: userId,
     groupId: generateId(),
     date:
-      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear(),
+    `${month[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`,
     groupname: groupname,
     members: members,
   };
@@ -31,7 +33,7 @@ const addExpense = (groupId, person, title, amount) => {
     groupId: groupId,
     person: person,
     date:
-      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear(),
+    `${month[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`,
     title: title,
     amount: amount,
   };

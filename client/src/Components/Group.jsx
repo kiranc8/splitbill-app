@@ -219,7 +219,7 @@ const Group = () => {
                         {item.groupname}
                       </Typography>
                       <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                        Created on: {item.date}
+                        Created on  {item.date}
                       </Typography>
                       <Box sx={{ display: "flex" }}>
                         <AvatarGroup total={item.members.length}>
