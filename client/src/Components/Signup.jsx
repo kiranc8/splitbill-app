@@ -142,7 +142,7 @@ const Signup = () => {
       <Container
         sx={{
           display: "flex",
-          minHeight:"75vh",
+          minHeight:"73vh",
           justifyContent: "center",
           alignItems: "center",
           flexDirection: { md: "row", xs: "column" },

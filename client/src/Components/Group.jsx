@@ -174,8 +174,8 @@ const Group = () => {
               alignItems: "center",
             }}
           >
-            <Typography fontSize="25px">
-              Create group a by pressing the button
+            <Typography fontSize="25px" textAlign="center">
+              Create group by pressing the button
             </Typography>
           </Container>
         ) : (
