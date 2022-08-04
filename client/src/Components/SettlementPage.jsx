@@ -97,7 +97,7 @@ const SettlementPage = () => {
                         <TableCell align="left">{item.from}</TableCell>
                         <TableCell align="center">owes</TableCell>
                         <TableCell align="center">{item.to}</TableCell>
-                        <TableCell align="right">INR{item.amount}</TableCell>
+                        <TableCell align="right">INR {item.amount}</TableCell>
                       </TableRow>
                     );
                   })}

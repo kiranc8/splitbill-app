@@ -91,15 +91,17 @@ const Group = () => {
     setOpen(false);
   };
 
-  //need to complete ---------------------------------------------------> (1)
-  const handleDelete = () => {
-    console.info("You clicked the delete icon.");
+  const handleDelete = (index) => {
+    setChipdata(
+      chipdata
+        .slice(0, index)
+        .concat(chipdata.slice(index + 1, chipdata.length))
+    );
   };
 
   const addPeople = () => {
     if (name !== "") {
       setChipdata((chipdata) => [...chipdata, name]);
-      setName("");
     }
   };
 
@@ -305,12 +307,12 @@ const Group = () => {
                     ),
                   }}
                 />
-                {chipdata.map((item) => {
+                {chipdata.map((item, index) => {
                   return (
                     <Chip
                       label={item}
                       variant="outlined"
-                      onDelete={handleDelete}
+                      onDelete={() => handleDelete(index)}
                       sx={{ margin: "5px" }}
                     />
                   );
