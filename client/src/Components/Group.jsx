@@ -119,6 +119,7 @@ const Group = () => {
         if (response.data === "Group Created") {
           setErrorMsg("");
           setSuccessMsg(response.data);
+          setChipdata([]);
           setOpenSnackbar(true);
           loadData();
           handleClose();
@@ -130,8 +131,7 @@ const Group = () => {
       .catch((err) => {
         if (err.response.status === 403 || err.response.status === 401) {
           navigate("/login");
-        }
-        else{
+        } else {
           setErrorMsg(err.message);
           setOpenSnackbar(true);
         }
@@ -166,9 +166,18 @@ const Group = () => {
         }}
       >
         {groupdata.length === 0 ? (
-          <h1 style={{ textAlign: "center" }}>
-            Create group a by pressing the button
-          </h1>
+          <Container
+            sx={{
+              display: "flex",
+              minHeight: "75vh",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography fontSize="25px">
+              Create group a by pressing the button
+            </Typography>
+          </Container>
         ) : (
           groupdata.map((item) => {
             return (

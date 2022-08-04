@@ -110,8 +110,7 @@ const Login = () => {
       <Container
         sx={{
           display: "flex",
-          // marginTop: "100px",
-          minHeight: "80vh",
+          minHeight: "75vh",
           justifyContent: "center",
           alignItems: "center",
           flexDirection: { md: "row", xs: "column" },

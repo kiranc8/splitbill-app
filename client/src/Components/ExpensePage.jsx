@@ -177,8 +177,8 @@ const ExpensePage = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          minHeight: "88vh",
-          maxHeight: "88vh",
+          minHeight: "78vh",
+          maxHeight: "78vh",
           overflowX: "scroll",
           padding: "5px",
         }}
@@ -308,7 +308,7 @@ const ExpensePage = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box>
         <SpeedDial
           ariaLabel="SpeedDial basic example"
           sx={{ position: "absolute", bottom: 5, right: 16 }}
