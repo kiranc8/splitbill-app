@@ -69,6 +69,7 @@ const SettlementPage = () => {
               sx={{
                 width: { md: "50%", xs: "100%" },
                 marginTop: { md: "0", xs: "50px" },
+                marginBottom:"20px",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
