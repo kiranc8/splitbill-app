@@ -6,7 +6,7 @@ const verifyToken = (req, res, next) => {
     //authorization = bearer header
   }
   let token = authHeader.split(" ")[1];
-  jwt.verify(token, "secret", (err, decoded) => {
+  jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
     if (err) {
       res.status(403).send("Authentication failed");
     } else {
