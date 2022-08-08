@@ -60,7 +60,6 @@ const getGroups = (userId) => {
 const getMembers = (groupId) => {
   return Group.find({ groupId })
     .then((result) => {
-      // console.log(result[0].members)
       if (result.length > 0) {
         return result[0].members;
       } else {

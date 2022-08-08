@@ -107,6 +107,7 @@ const Login = () => {
             setOpen(true);
           } else {
             localStorage.setItem("loggedIn", true);
+            localStorage.setItem("name",response.data.resp.name);
             localStorage.setItem("userId", response.data.resp.userId);
             localStorage.setItem("authToken", response.data.token);
             hideLoader();

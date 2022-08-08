@@ -38,6 +38,7 @@ const Group = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [loader, setLoader] = useState(true);
   const token = localStorage.getItem("authToken");
+  const me = localStorage.getItem("name");
   const userId = localStorage.getItem("userId");
   useEffect(() => {
     axios
@@ -46,6 +47,7 @@ const Group = () => {
       })
       .then((response) => {
         setGroupdata(response.data);
+        setChipdata(me);
         hideLoader();
       })
       .catch((err) => {

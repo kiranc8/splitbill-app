@@ -26,6 +26,7 @@ router.post("/login", (req, res) => {
       } else {
         let message = "Login successful";
         let resp = {
+          name:result.name,
           userId: result.userId,
           email: result.email,
           password: result.password,
