@@ -47,7 +47,7 @@ const Group = () => {
       })
       .then((response) => {
         setGroupdata(response.data);
-        setChipdata(me);
+        setChipdata((chipdata) => [...chipdata, me]);
         hideLoader();
       })
       .catch((err) => {
