@@ -85,6 +85,7 @@ const ExpensePage = () => {
       .catch((err) => {
         if (err.response.status === 403 || err.response.status === 401) {
           navigate("/login");
+          hideLoader();
         }
       });
   };
@@ -137,7 +138,11 @@ const ExpensePage = () => {
     if (title === "" || amount === "" || person === "") {
       setErrorMsg("Please fill all fields");
       setOpenSnackbar(true);
-    } else {
+    }else if(amount<0){
+      setErrorMsg("Amount shouldn't be negative");
+      setOpenSnackbar(true);
+    }
+     else {
       let formObj = {
         groupId: groupId,
         title: title,
@@ -156,13 +161,14 @@ const ExpensePage = () => {
       })
       .then((response) => {
         if (response) {
+          setErrorMsg("");
           setSuccessMsg(response.data);
           setTitle("");
           setAmount("");
           handleClose();
-          hideLoader();
           setOpenSnackbar(true);
           loadData();
+          hideLoader();
         }
       })
       .catch((err) => {
