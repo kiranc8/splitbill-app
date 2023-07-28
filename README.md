@@ -31,7 +31,6 @@ SECRET_KEY=<SECRET_KEY_FOR_AUTH_TOKEN>
 ```
 4. ```npm start```
 5. Go to the client folder ```cd client``` run the following command
-6. 
 ```
 npm install
 npm start
