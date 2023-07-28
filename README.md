@@ -3,7 +3,7 @@ A simple Bill splitting app with basic features like create group, add expense a
 
 ## DEMO
 
-https://splititt.herokuapp.com/
+[https://splititt.herokuapp.com/](https://splititt.netlify.app/)
 
 ## FEATURES
 
