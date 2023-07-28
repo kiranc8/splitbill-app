@@ -12,7 +12,6 @@ const {
 const settle = require("../controller/settlement");
 const { verifyToken } = require("../Authentication/auth");
 router.post("/creategroup", verifyToken, (req, res) => {
-  console.log(req.body);
   const { userId, groupname, members } = req.body;
   createGroup(userId, groupname, members)
     .then((result) => {

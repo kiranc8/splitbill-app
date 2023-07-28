@@ -1,1 +1,1 @@
-export const baseUrl = 'https://splititt.herokuapp.com';
+export const baseUrl = 'http://13.53.132.40:8080';
