@@ -3,7 +3,7 @@ A simple Bill splitting app with basic features like create group, add expense a
 
 ## DEMO
 
-https://splititt.herokuapp.com/
+https://splititt.netlify.app/
 
 ## FEATURES
 
@@ -20,25 +20,20 @@ Technologies used: MongoDB, HTML, CSS, Reactjs, JavaScript, Nodejs, MUI
 
 The application stores all the data in MongoDB database, so creating MongoDB cluster is required for running the project locally.
 
-1. Go to the root folder ```cd mern-todo-app```
+1. Go to the server folder ```cd server```
 2. ```npm install```
 3. Create your environment variables in .env file
-
 ```
 PORT=8080
 MONGO_URI=<YOUR_MONGODB_URI_TO_CONNECT_YOUR_APPLICATION>
 NODE_ENV=production
 SECRET_KEY=<SECRET_KEY_FOR_AUTH_TOKEN>
 ```
-4. Go to the client folder ```cd client``` run the following command
-
+4. ```npm start```
+5. Go to the client folder ```cd client``` run the following command
 ```
 npm install
-npm run build
+npm start
 ```
 
-5. Run the application from root folder (splitbill-app)
-
-``` npm start ```
-
-Your application will be running in ```localhost:8080```
+Your application will be running in ```localhost:3000```
