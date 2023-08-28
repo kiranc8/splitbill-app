@@ -1,5 +1,5 @@
 # Bill Split
-A simple Bill splitting app with basic features like create group, add expense and settle bill option. Once created an account, they will be able to create group and add expenses. The web has built with MERN full stack and it has been deployed with Heroku.
+A simple Bill splitting app with basic features like create group, add expense and settle bill option. Once created an account, they will be able to create group and add expenses. The web has built with MERN full stack and it has been deployed with netlify and aws EC2.
 
 ## DEMO
 
@@ -26,7 +26,6 @@ The application stores all the data in MongoDB database, so creating MongoDB clu
 ```
 PORT=8080
 MONGO_URI=<YOUR_MONGODB_URI_TO_CONNECT_YOUR_APPLICATION>
-NODE_ENV=production
 SECRET_KEY=<SECRET_KEY_FOR_AUTH_TOKEN>
 ```
 4. ```npm start```
