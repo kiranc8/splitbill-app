@@ -1,9 +1,9 @@
 # Bill Split
-A simple Bill splitting app with basic features like create group, add expense and settle bill option. Once created an account, they will be able to create group and add expenses. The web has built with MERN full stack and it has been deployed with netlify and aws EC2.
+A simple Bill splitting app with basic features like create group, add expense and settle bill option. Once created an account, they will be able to create group and add expenses. The web has built with MERN full stack and it has been deployed with Render.
 
 ## DEMO
 
-https://splititt.netlify.app/
+https://bill-split.onrender.com/
 
 ## FEATURES
 
