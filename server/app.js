@@ -11,6 +11,10 @@ const app = express(); //Main
 connectDB();
 app.use(express.json()); //To accept json data
 app.use(cors());
+app.use(cors({
+  origin: 'https://bill-split.onrender.com/',
+}));
+
 
 app.use("/user", userRouter);
 app.use("/expense", expenseRouter);
@@ -33,8 +37,8 @@ if (process.env.NODE_ENV === "production") {
 
 // --------------------------deployment------------------------------
 
-app.get("/",(req,res)=>{
-    res.send("API is running")
+app.get("/", (req, res) => {
+  res.send("API is running")
 })
 
 const PORT = process.env.PORT || 5000;
