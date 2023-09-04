@@ -29,7 +29,6 @@ router.post("/login", (req, res) => {
           name:result.name,
           userId: result.userId,
           email: result.email,
-          password: result.password,
         };
         let token = jwt.sign(resp, process.env.SECRET_KEY, { expiresIn: 8640 });
         res.send({ message: message, auth: true, resp, token: token });
