@@ -12,7 +12,7 @@ connectDB();
 app.use(express.json()); //To accept json data
 app.use(cors());
 app.use(cors({
-  origin: 'https://bill-split.onrender.com/',
+  origin: 'https://bill-split.onrender.com',
 }));
 
 
